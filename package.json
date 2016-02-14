@@ -1,0 +1,24 @@
+{
+  "name": "abstract-pull-git-repo",
+  "version": "0.1.0",
+  "description": "abstract git repo interface using pull streams",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/clehner/abstract-pull-git-repo"
+  },
+  "keywords": [
+    "git",
+    "pull-stream",
+    "pull-git-repo"
+  ],
+  "author": "Charles Lehner (http://celehner.com/)",
+  "license": "Fair",
+  "bugs": {
+    "url": "https://github.com/clehner/abstract-pull-git-repo/issues"
+  },
+  "devDependencies": {
+    "multicb": "^1.2.1",
+    "pull-stream": "^3.1.0"
+  }
+}

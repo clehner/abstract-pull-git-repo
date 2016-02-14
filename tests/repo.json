@@ -1,0 +1,129 @@
+{
+  "updates": [
+    {
+      "refs": [
+        {
+          "name": "refs/heads/master",
+          "old": null,
+          "new": "9a385c1d6b48b7f472ac507a3ec08263358e9804"
+        }
+      ],
+      "objects": [
+        "9a385c1d6b48b7f472ac507a3ec08263358e9804",
+        "68aba62e560c0ebc3396e8ae9335232cd93a3f60",
+        "3b18e512dba79e4c8300dd08aeb37f8e728b8dad"
+      ]
+    },
+    {
+      "refs": [
+        {
+          "name": "refs/heads/master",
+          "old": "9a385c1d6b48b7f472ac507a3ec08263358e9804",
+          "new": "4afea1721eed6ab0de651f73f767c64406aeaeae"
+        }
+      ],
+      "objects": [
+        "4afea1721eed6ab0de651f73f767c64406aeaeae",
+        "a1c857fd91baba24b7b222888a69f6c7505b950e",
+        "17d5d9edf31a80878ad4911017cbd6d1d03322b8"
+      ]
+    },
+    {
+      "refs": [
+        {
+          "name": "refs/heads/master",
+          "old": "4afea1721eed6ab0de651f73f767c64406aeaeae",
+          "new": "20a13010852a58a413d482dcbd096e4ee24657e5"
+        }
+      ],
+      "objects": [
+        "20a13010852a58a413d482dcbd096e4ee24657e5",
+        "96e10162dd55da56a440c5285ea9e7d4abf55d77",
+        "b003f60fabe02db342c9ffb4d435bff33f53212d",
+        "b2b44a390248a684864825aff87f8cf75a57c028",
+        "e0ceccfa415db4c7eef667b59dec7b3db8d62e25",
+        "24d3d234168b07d24fa2baebc5b5c351edba24a5"
+      ]
+    },
+    {
+      "refs": [
+        {
+          "name": "refs/tags/v1.0.0",
+          "old": null,
+          "new": "6a63b117b09c5c82cb1085cbf525da8f94f5bdf8"
+        }
+      ],
+      "objects": [
+        "6a63b117b09c5c82cb1085cbf525da8f94f5bdf8"
+      ]
+    }
+  ],
+
+  "objects": {
+    "17d5d9edf31a80878ad4911017cbd6d1d03322b8": {
+      "type": "blob",
+      "length": 13,
+      "data": "another file\n"
+    },
+    "20a13010852a58a413d482dcbd096e4ee24657e5": {
+      "type": "commit",
+      "length": 204,
+      "data": "tree 96e10162dd55da56a440c5285ea9e7d4abf55d77\nparent 4afea1721eed6ab0de651f73f767c64406aeaeae\nauthor root <root@localhost> 1455078702 -0500\ncommitter root <root@localhost> 1455078702 -0500\n\nUpdate a file\n"
+    },
+    "24d3d234168b07d24fa2baebc5b5c351edba24a5": {
+      "type": "blob",
+      "length": 15,
+      "data": "here is a file\n"
+    },
+    "3b18e512dba79e4c8300dd08aeb37f8e728b8dad": {
+      "type": "blob",
+      "length": 12,
+      "data": "hello world\n"
+    },
+    "4afea1721eed6ab0de651f73f767c64406aeaeae": {
+      "type": "commit",
+      "length": 205,
+      "data": "tree a1c857fd91baba24b7b222888a69f6c7505b950e\nparent 9a385c1d6b48b7f472ac507a3ec08263358e9804\nauthor root <root@localhost> 1455078685 -0500\ncommitter root <root@localhost> 1455078685 -0500\n\nAdd more files\n"
+    },
+    "68aba62e560c0ebc3396e8ae9335232cd93a3f60": {
+      "type": "tree",
+      "length": 37,
+      "data": "3130303634342068656c6c6f2e747874003b18e512dba79e4c8300dd08aeb37f8e728b8dad"
+    },
+    "6a63b117b09c5c82cb1085cbf525da8f94f5bdf8": {
+      "type": "tag",
+      "length": 127,
+      "data": "object 20a13010852a58a413d482dcbd096e4ee24657e5\ntype commit\ntag v1.0.0\ntagger root <root@localhost> 1455125864 -0500\n\ncool tag\n"
+    },
+    "96e10162dd55da56a440c5285ea9e7d4abf55d77": {
+      "type": "tree",
+      "length": 104,
+      "data": "343030303020666f6f00b003f60fabe02db342c9ffb4d435bff33f53212d3130303634342068656c6c6f2e747874003b18e512dba79e4c8300dd08aeb37f8e728b8dad313030363434207468696e672e74787400b2b44a390248a684864825aff87f8cf75a57c028"
+    },
+    "9a385c1d6b48b7f472ac507a3ec08263358e9804": {
+      "type": "commit",
+      "length": 157,
+      "data": "tree 68aba62e560c0ebc3396e8ae9335232cd93a3f60\nauthor root <root@localhost> 1455078653 -0500\ncommitter root <root@localhost> 1455078653 -0500\n\nInitial commit\n"
+    },
+    "a1c857fd91baba24b7b222888a69f6c7505b950e": {
+      "type": "tree",
+      "length": 104,
+      "data": "343030303020666f6f00b003f60fabe02db342c9ffb4d435bff33f53212d3130303634342068656c6c6f2e747874003b18e512dba79e4c8300dd08aeb37f8e728b8dad313030363434207468696e672e7478740017d5d9edf31a80878ad4911017cbd6d1d03322b8"
+    },
+    "b003f60fabe02db342c9ffb4d435bff33f53212d": {
+      "type": "tree",
+      "length": 30,
+      "data": "34303030302062617200e0ceccfa415db4c7eef667b59dec7b3db8d62e25"
+    },
+    "b2b44a390248a684864825aff87f8cf75a57c028": {
+      "type": "blob",
+      "length": 26,
+      "data": "another file got modified\n"
+    },
+    "e0ceccfa415db4c7eef667b59dec7b3db8d62e25": {
+      "type": "tree",
+      "length": 33,
+      "data": "3130303634342073747566660024d3d234168b07d24fa2baebc5b5c351edba24a5"
+    }
+  }
+}
