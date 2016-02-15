@@ -160,6 +160,7 @@ function testUpdate(t, repo, i, onEnd) {
       repo.getObject(hash, done())
     })
     done(function (err, objects) {
+      t.error(err, 'got objects')
       if (!objects) {
         t.fail('getObject failed')
       } else {
