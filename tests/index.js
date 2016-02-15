@@ -42,14 +42,6 @@ module.exports = function (test, createRepo) {
     })
   })
 
-  test('empty repo does not have dummy object', function (t) {
-    createRepo().hasObject('00000000000000000000', function (err, has) {
-      t.error(err, 'checked for object')
-      t.notOk(has, 'object not present')
-      t.end()
-    })
-  })
-
   test('push updates to repo', function (t) {
     var repo = createRepo()
     testPushCommit0(t, repo)
