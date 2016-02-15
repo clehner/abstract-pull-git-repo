@@ -146,8 +146,13 @@ function testUpdate(t, repo, i, onEnd) {
     repo.hasObject(hash, done())
   })
   done(function (err, haves) {
-    t.notOk(haves.some(Boolean), 'objects not present before push')
-    t.equals(haves.length, hashes.length, 'not any of the objects')
+    t.error(err, 'have objects')
+    if (!haves) {
+      t.fail('hasObject failed')
+    } else {
+      t.notOk(haves.some(Boolean), 'objects not present before push')
+      t.equals(haves.length, hashes.length, 'not any of the objects')
+    }
 
     // check objects non-existence
     var done = multicb({pluck: 1})
@@ -155,8 +160,12 @@ function testUpdate(t, repo, i, onEnd) {
       repo.getObject(hash, done())
     })
     done(function (err, objects) {
-      t.notOk(haves.some(Boolean), 'objects not present before push')
-      t.equals(haves.length, hashes.length, 'not any of the objects')
+      if (!objects) {
+        t.fail('getObject failed')
+      } else {
+        t.notOk(haves.some(Boolean), 'objects not present before push')
+        t.equals(haves.length, hashes.length, 'not any of the objects')
+      }
 
       // push objects and ref updates
       var update = getUpdate(i)
@@ -173,8 +182,12 @@ function testUpdate(t, repo, i, onEnd) {
       repo.hasObject(hash, done())
     })
     done(function (err, haves) {
-      t.ok(haves.every(Boolean), 'got the objects')
-      t.equals(haves.length, hashes.length, 'all the objects')
+      if (!haves) {
+        t.fail('hasObject failed')
+      } else {
+        t.ok(haves.every(Boolean), 'got the objects')
+        t.equals(haves.length, hashes.length, 'all the objects')
+      }
 
       t.test('object contents can be retrieved', testObjectsRetrievable)
     })
@@ -186,6 +199,10 @@ function testUpdate(t, repo, i, onEnd) {
       var cb = done()
       repo.getObject(hash, function (err, obj) {
         t.error(err, 'got object')
+        if (!obj) {
+          t.fail('Missing object ' + hash)
+          return cb()
+        }
         pull(
           obj.read,
           pull.collect(function (err, bufs) {
