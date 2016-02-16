@@ -1,7 +1,11 @@
 # abstract-pull-git-repo
 
-git repo interface using
-[pull-streams](https://github.com/dominictarr/pull-stream/).
+git repo interface using [pull-stream][]s
+
+[pull-stream]: https://github.com/dominictarr/pull-stream/
+[memory-pull-git-repo]: https://github.com/clehner/memory-pull-git-repo
+[tape]: https://github.com/substack/tape
+[keyword]: https://www.npmjs.com/browse/keyword/pull-git-repo
 
 ## API
 
@@ -77,14 +81,14 @@ tests.repo(test, new Repo)
 
 Test that an empty repo can be pushed to and updated
 
-- `test`: [tape](https://github.com/substack/tape)-compatible test object
+- `test`: [tape][]-compatible test object
 - `repo`: `abstract-pull-git-repo`-compatible repo object
 
 #### `tests.repos(test, repoA, repoB)`
 
 Test that updates pushed to one repo are visible on the other repo
 
-- `test`: [tape](https://github.com/substack/tape)-compatible test object
+- `test`: [tape][]-compatible test object
 - `repoA`: repo to update
 - `repoB`: repo to retrieve updates from
 
@@ -96,10 +100,9 @@ tests.repos(test, new SyncedRepo(repoId), new SyncedRepo(repoId))
 
 ## Implementations
 
-- [memory-pull-git-repo](https://github.com/clehner/memory-pull-git-repo)
+- [memory-pull-git-repo][]
 
-See also keyword
-[`pull-git-repo`](https://www.npmjs.com/browse/keyword/pull-git-repo) on npm
+See also keyword [`pull-git-repo`][keyword] on npm
 
 ## License
 
