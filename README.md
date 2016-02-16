@@ -86,22 +86,26 @@ var Repo = require('your-custom-git-repo-implementation')
 tests.repo(test, new Repo)
 ```
 
-#### `tests.repos(test, repoA, repoA)`
+#### `tests.repos(test, repoA, getRepoB(cb(err, repoB))`
 
 Test that updates pushed to one repo are visible on the other repo
 
 - `test`: [tape][]-compatible test object
 - `repoA`: repo to update
 - `repoB`: repo to retrieve updates from
+- `getRepoB`: function to get repo to retrieve updates from. May be called more
+    than once.
+- `err`: error getting a repo, if any
 
 ##### Example
 
 ```js
 var SyncedRepo = require('your-custom-synced-git-repo')
-var repoA = new SyncedRepo(repoId)
-var repoB = new SyncedRepo(repoId)
+var repo = new SyncedRepo()
 
-tests.repos(test, repoA, repoB)
+tests.repos(test, repo, function (cb) {
+  cb(null, new SyncedRepo(repo.id))
+})
 ```
 
 ## Implementations

@@ -46,14 +46,33 @@ exports.repo = function (test, repo) {
   })
 }
 
-exports.repos = function (test, repoA, repoB) {
-  test('push updates between repos', function (t) {
-    testPushCommit0(t, repoA, repoB)
-    testPushCommit1(t, repoA, repoB)
-    testPushCommit2(t, repoA, repoB)
-    testPushTag(t, repoA, repoB)
-    testPushTagAgain(t, repoA, repoB)
-    testDeleteTag(t, repoA, repoB)
+exports.repos = function (test, repoA, getRepoB) {
+  test('push updates between new repos', function (t) {
+    getRepoB(function (err, repoB) {
+      t.error(err, 'got repo B')
+      testPushCommit0(t, repoA, repoB)
+      testPushCommit1(t, repoA, repoB)
+    })
+  })
+
+  test('check for updates on new repo instance', function (t) {
+    getRepoB(function (err, repoB) {
+      t.error(err, 'got repo B')
+      testRefs(t, repoB, {
+        'refs/heads/master': '4afea1721eed6ab0de651f73f767c64406aeaeae'
+      })
+      testObjectsAdded(t, repoB, testRepoData.updates[1].objects)
+    })
+  })
+
+  test('push more updates', function (t) {
+    getRepoB(function (err, repoB) {
+      t.error(err, 'got repo B')
+      testPushCommit2(t, repoA, repoB)
+      testPushTag(t, repoA, repoB)
+      testPushTagAgain(t, repoA, repoB)
+      testDeleteTag(t, repoA, repoB)
+    })
   })
 }
 
