@@ -67,14 +67,6 @@ done by the feed owner.
 
 Use this repo's test suite to test your own git repo implementation:
 
-```js
-var test = require('tape')
-var tests = require('abstract-pull-git-repo/tests')
-var Repo = require('your-custom-git-repo-implementation')
-
-tests.repo(test, new Repo)
-```
-
 ### API
 
 #### `tests.repo(test, repo)`
@@ -84,7 +76,17 @@ Test that an empty repo can be pushed to and updated
 - `test`: [tape][]-compatible test object
 - `repo`: `abstract-pull-git-repo`-compatible repo object
 
-#### `tests.repos(test, repoA, repoB)`
+##### Example
+
+```js
+var test = require('tape')
+var tests = require('abstract-pull-git-repo/tests')
+var Repo = require('your-custom-git-repo-implementation')
+
+tests.repo(test, new Repo)
+```
+
+#### `tests.repos(test, repoA, repoA)`
 
 Test that updates pushed to one repo are visible on the other repo
 
@@ -92,10 +94,14 @@ Test that updates pushed to one repo are visible on the other repo
 - `repoA`: repo to update
 - `repoB`: repo to retrieve updates from
 
-```js
-var SyncedRepo = require('your-custom-synced-git-repo-implementation')
+##### Example
 
-tests.repos(test, new SyncedRepo(repoId), new SyncedRepo(repoId))
+```js
+var SyncedRepo = require('your-custom-synced-git-repo')
+var repoA = new SyncedRepo(repoId)
+var repoB = new SyncedRepo(repoId)
+
+tests.repos(test, repoA, repoB)
 ```
 
 ## Implementations
