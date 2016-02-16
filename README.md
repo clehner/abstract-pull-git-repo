@@ -64,9 +64,34 @@ done by the feed owner.
 Use this repo's test suite to test your own git repo implementation:
 
 ```js
+var test = require('tape')
 var tests = require('abstract-pull-git-repo/tests')
 var Repo = require('your-custom-git-repo-implementation')
-tests(require('tape'), function () { return new Repo() })
+
+tests.repo(test, new Repo)
+```
+
+### API
+
+#### `tests.repo(test, repo)`
+
+Test that an empty repo can be pushed to and updated
+
+- `test`: [tape](https://github.com/substack/tape)-compatible test object
+- `repo`: `abstract-pull-git-repo`-compatible repo object
+
+#### `tests.repos(test, repoA, repoB)`
+
+Test that updates pushed to one repo are visible on the other repo
+
+- `test`: [tape](https://github.com/substack/tape)-compatible test object
+- `repoA`: repo to update
+- `repoB`: repo to retrieve updates from
+
+```js
+var SyncedRepo = require('your-custom-synced-git-repo-implementation')
+
+tests.repos(test, new SyncedRepo(repoId), new SyncedRepo(repoId))
 ```
 
 ## Implementations

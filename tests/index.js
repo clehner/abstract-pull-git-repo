@@ -26,16 +26,10 @@ function getUpdate(num) {
   }
 }
 
-module.exports = function (test, createRepo) {
-
-  test('create repo', function (t) {
-    var repo = createRepo()
-    t.ok(repo, 'created repo')
-    t.end()
-  })
+exports.repo = function (test, repo) {
 
   test('empty repo has no refs', function (t) {
-    var readRef = createRepo().refs()
+    var readRef = repo.refs()
     readRef(null, function next(end, ref) {
       t.equals(end, true, 'no refs')
       t.end()
@@ -43,13 +37,23 @@ module.exports = function (test, createRepo) {
   })
 
   test('push updates to repo', function (t) {
-    var repo = createRepo()
     testPushCommit0(t, repo, repo)
     testPushCommit1(t, repo, repo)
     testPushCommit2(t, repo, repo)
     testPushTag(t, repo, repo)
     testPushTagAgain(t, repo, repo)
     testDeleteTag(t, repo, repo)
+  })
+}
+
+exports.repos = function (test, repoA, repoB) {
+  test('push updates between repos', function (t) {
+    testPushCommit0(t, repoA, repoB)
+    testPushCommit1(t, repoA, repoB)
+    testPushCommit2(t, repoA, repoB)
+    testPushTag(t, repoA, repoB)
+    testPushTagAgain(t, repoA, repoB)
+    testDeleteTag(t, repoA, repoB)
   })
 }
 
