@@ -129,15 +129,27 @@ function testDeleteTag(t, repo) {
   })
 }
 
-function testUpdate(t, repo, i, onEnd) {
-  var hashes = testRepoData.updates[i].objects
-
-  // check objects non-presence
+function repoHasObjects(repo, hashes, cb) {
   var done = multicb({pluck: 1})
   hashes.forEach(function (hash) {
     repo.hasObject(hash, done())
   })
-  done(function (err, haves) {
+  done(cb)
+}
+
+function repoGetObjects(repo, hashes, cb) {
+  var done = multicb({pluck: 1})
+  hashes.forEach(function (hash) {
+    repo.getObject(hash, done())
+  })
+  done(cb)
+}
+
+function testUpdate(t, repo, i, onEnd) {
+  var hashes = testRepoData.updates[i].objects
+
+  // check objects non-presence
+  repoHasObjects(repo, hashes, function (err, haves) {
     t.error(err, 'have objects')
     if (!haves) {
       t.fail('hasObject failed')
@@ -147,11 +159,7 @@ function testUpdate(t, repo, i, onEnd) {
     }
 
     // check objects non-existence
-    var done = multicb({pluck: 1})
-    hashes.forEach(function (hash) {
-      repo.getObject(hash, done())
-    })
-    done(function (err, objects) {
+    repoGetObjects(repo, hashes, function (err, objects) {
       t.error(err, 'got objects')
       if (!objects) {
         t.fail('getObject failed')
@@ -170,11 +178,7 @@ function testUpdate(t, repo, i, onEnd) {
   })
 
   function testObjectsAdded(t) {
-    var done = multicb({pluck: 1})
-    hashes.forEach(function (hash) {
-      repo.hasObject(hash, done())
-    })
-    done(function (err, haves) {
+    repoHasObjects(repo, hashes, function (err, haves) {
       if (!haves) {
         t.fail('hasObject failed')
       } else {
