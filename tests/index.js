@@ -44,87 +44,77 @@ module.exports = function (test, createRepo) {
 
   test('push updates to repo', function (t) {
     var repo = createRepo()
-    testPushCommit0(t, repo)
-    testPushCommit1(t, repo)
-    testPushCommit2(t, repo)
-    testPushTag(t, repo)
-    testPushTagAgain(t, repo)
-    testDeleteTag(t, repo)
+    testPushCommit0(t, repo, repo)
+    testPushCommit1(t, repo, repo)
+    testPushCommit2(t, repo, repo)
+    testPushTag(t, repo, repo)
+    testPushTagAgain(t, repo, repo)
+    testDeleteTag(t, repo, repo)
   })
 }
 
-function testPushCommit0(t, repo) {
+function testPushCommit0(t, repoA, repoB) {
   t.test('push initial commit with a file', function (t) {
-    testUpdate(t, repo, 0, function () {
-      testRefs(t, repo, {
-        'refs/heads/master': '9a385c1d6b48b7f472ac507a3ec08263358e9804'
-      })
-      t.end()
+    testUpdate(t, repoA, repoB, 0)
+    testRefs(t, repoA, repoB, {
+      'refs/heads/master': '9a385c1d6b48b7f472ac507a3ec08263358e9804'
     })
   })
 }
 
-function testPushCommit1(t, repo) {
+function testPushCommit1(t, repoA, repoB) {
   t.test('push a commit updating some files', function (t) {
-    testUpdate(t, repo, 1, function () {
-      testRefs(t, repo, {
-        'refs/heads/master': '4afea1721eed6ab0de651f73f767c64406aeaeae'
-      })
-      t.end()
+    testUpdate(t, repoA, repoB, 1)
+    testRefs(t, repoA, repoB, {
+      'refs/heads/master': '4afea1721eed6ab0de651f73f767c64406aeaeae'
     })
   })
 }
 
-function testPushCommit2(t, repo) {
+function testPushCommit2(t, repoA, repoB) {
   t.test('push another commit and stuff', function (t) {
-    testUpdate(t, repo, 2, function () {
-      testRefs(t, repo, {
-        'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5'
-      })
-      t.end()
+    testUpdate(t, repoA, repoB, 2)
+    testRefs(t, repoA, repoB, {
+      'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5'
     })
   })
 }
 
-function testPushTag(t, repo) {
+function testPushTag(t, repoA, repoB) {
   t.test('push a tag', function (t) {
-    testUpdate(t, repo, 3, function () {
-      testRefs(t, repo, {
-        'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5',
-        'refs/tags/v1.0.0': '6a63b117b09c5c82cb1085cbf525da8f94f5bdf8'
-      })
-      t.end()
+    testUpdate(t, repoA, repoB, 3)
+    testRefs(t, repoA, repoB, {
+      'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5',
+      'refs/tags/v1.0.0': '6a63b117b09c5c82cb1085cbf525da8f94f5bdf8'
     })
   })
 }
 
-function testPushTagAgain(t, repo) {
+function testPushTagAgain(t, repoA, repoB) {
   t.test('push tag again', function (t) {
     var update = getUpdate(3)
-    repo.update(update.refs, update.objects, function (err) {
+    repoA.update(update.refs, update.objects, function (err) {
       t.ok(err, 'pushing tag again fails')
-      testRefs(t, repo, {
+      testRefs(t, repoA, repoB, {
         'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5',
         'refs/tags/v1.0.0': '6a63b117b09c5c82cb1085cbf525da8f94f5bdf8'
-      }, 'refs unchanged', 'refs unchanged')
-      t.end()
+      })
     })
   })
 }
 
-function testDeleteTag(t, repo) {
+function testDeleteTag(t, repoA, repoB) {
   t.test('delete tag', function (t) {
     var update = getUpdate(3)
-    repo.update(pull.once({
+    repoA.update(pull.once({
       name: 'refs/tags/v1.0.0',
       old: '6a63b117b09c5c82cb1085cbf525da8f94f5bdf8',
       new: null
     }), null, function (err) {
       t.error(err, 'deleted tag')
-      testRefs(t, repo, {
+      testRefs(t, repoA, repoB, {
         'refs/heads/master': '20a13010852a58a413d482dcbd096e4ee24657e5',
       }, 'check refs', 'tag was deleted')
-      t.end()
     })
   })
 }
@@ -145,10 +135,30 @@ function repoGetObjects(repo, hashes, cb) {
   done(cb)
 }
 
-function testUpdate(t, repo, i, onEnd) {
+function testUpdate(t, repoA, repoB, i) {
   var hashes = testRepoData.updates[i].objects
 
-  // check objects non-presence
+  t.test('repo A does not have the objects before push', function (t) {
+    testNoObjects(t, repoA, hashes)
+  })
+  t.test('repo B does not have the objects before push', function (t) {
+    testNoObjects(t, repoB, hashes)
+  })
+
+  t.test('push objects and ref update', function (t) {
+    var update = getUpdate(i)
+    repoA.update(update.refs, update.objects, function (err) {
+      t.error(err, 'pushed update')
+      t.test('objects are added', function (t) {
+        testObjectsAdded(t, repoA, hashes)
+        testObjectsAdded(t, repoB, hashes)
+        t.end()
+      })
+    })
+  })
+}
+
+function testNoObjects(t, repo, hashes) {
   repoHasObjects(repo, hashes, function (err, haves) {
     t.error(err, 'have objects')
     if (!haves) {
@@ -158,7 +168,6 @@ function testUpdate(t, repo, i, onEnd) {
       t.equals(haves.length, hashes.length, 'not any of the objects')
     }
 
-    // check objects non-existence
     repoGetObjects(repo, hashes, function (err, objects) {
       t.error(err, 'got objects')
       if (!objects) {
@@ -166,62 +175,63 @@ function testUpdate(t, repo, i, onEnd) {
       } else {
         t.notOk(haves.some(Boolean), 'objects not present before push')
         t.equals(haves.length, hashes.length, 'not any of the objects')
+        t.end()
       }
-
-      // push objects and ref updates
-      var update = getUpdate(i)
-      repo.update(update.refs, update.objects, function (err) {
-        t.error(err, 'pushed update')
-        t.test('objects are added', testObjectsAdded)
-      })
     })
   })
-
-  function testObjectsAdded(t) {
-    repoHasObjects(repo, hashes, function (err, haves) {
-      if (!haves) {
-        t.fail('hasObject failed')
-      } else {
-        t.ok(haves.every(Boolean), 'got the objects')
-        t.equals(haves.length, hashes.length, 'all the objects')
-      }
-
-      t.test('object contents can be retrieved', testObjectsRetrievable)
-    })
-  }
-
-  function testObjectsRetrievable(t) {
-    var done = multicb({pluck: 1})
-    hashes.forEach(function (hash) {
-      var cb = done()
-      repo.getObject(hash, function (err, obj) {
-        t.error(err, 'got object')
-        if (!obj) {
-          t.fail('Missing object ' + hash)
-          return cb()
-        }
-        pull(
-          obj.read,
-          pull.collect(function (err, bufs) {
-            t.error(err, 'got object data')
-            var buf = Buffer.concat(bufs)
-            var expected = testRepoData.objects[hash]
-            t.deepEquals({
-              type: obj.type,
-              length: obj.length,
-              data: buf.toString(objectEncoding(obj))
-            }, expected, 'got ' + expected.type + ' ' + hash)
-            cb()
-          })
-        )
-      })
-    })
-    done(onEnd)
-  }
 }
 
-function testRefs(t, repo, refsExpected, msg, equalsMsg) {
-  t.test(msg || 'refs are updated', function (t) {
+function testObjectsAdded(t, repo, hashes) {
+  repoHasObjects(repo, hashes, function (err, haves) {
+    if (!haves) {
+      t.fail('hasObject failed')
+    } else {
+      t.ok(haves.every(Boolean), 'got the objects')
+      t.equals(haves.length, hashes.length, 'all the objects')
+    }
+
+    t.test('object contents can be retrieved', function (t) {
+      testObjectsRetrievable(t, repo, hashes)
+      t.end()
+    })
+  })
+}
+
+function testObjectsRetrievable(t, repo, hashes) {
+  var done = multicb({pluck: 1})
+  hashes.forEach(function (hash) {
+    var cb = done()
+    repo.getObject(hash, function (err, obj) {
+      t.error(err, 'got object')
+      if (!obj) {
+        t.fail('Missing object ' + hash)
+        return cb()
+      }
+      pull(
+        obj.read,
+        pull.collect(function (err, bufs) {
+          t.error(err, 'got object data')
+          var buf = Buffer.concat(bufs)
+          var expected = testRepoData.objects[hash]
+          t.deepEquals({
+            type: obj.type,
+            length: obj.length,
+            data: buf.toString(objectEncoding(obj))
+          }, expected, 'got ' + expected.type + ' ' + hash)
+          cb()
+        })
+      )
+    })
+  })
+}
+
+function testRefs(t, repoA, repoB, refs, msg, equalsMsg) {
+  testRefs1(t, repoA, refs, msg || 'refs are updated in repo A', equalsMsg)
+  testRefs1(t, repoB, refs, msg || 'refs are updated in repo B', equalsMsg)
+}
+
+function testRefs1(t, repo, refsExpected, msg, equalsMsg) {
+  t.test(msg, function (t) {
     pull(
       repo.refs(),
       pull.collect(function (err, refsArr) {
