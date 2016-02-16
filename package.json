@@ -1,6 +1,6 @@
 {
   "name": "abstract-pull-git-repo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "abstract git repo interface using pull streams",
   "main": "index.js",
   "repository": {
