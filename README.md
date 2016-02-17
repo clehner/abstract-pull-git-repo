@@ -4,6 +4,7 @@ git repo interface using [pull-stream][]s
 
 [pull-stream]: https://github.com/dominictarr/pull-stream/
 [memory-pull-git-repo]: https://github.com/clehner/memory-pull-git-repo
+[ssb-git]: https://github.com/clehner/ssb-git
 [tape]: https://github.com/substack/tape
 [keyword]: https://www.npmjs.com/browse/keyword/pull-git-repo
 
@@ -111,6 +112,7 @@ tests.repos(test, repo, function (cb) {
 ## Implementations
 
 - [memory-pull-git-repo][]
+- [ssb-git][]
 
 See also keyword [`pull-git-repo`][keyword] on npm
 
