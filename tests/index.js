@@ -188,14 +188,10 @@ function testNoObjects(t, repo, hashes) {
     }
 
     repoGetObjects(repo, hashes, function (err, objects) {
-      t.error(err, 'got objects')
-      if (!objects) {
-        t.fail('getObject failed')
-      } else {
-        t.notOk(haves.some(Boolean), 'objects not present before push')
-        t.equals(haves.length, hashes.length, 'not any of the objects')
-        t.end()
-      }
+      t.ok(err, 'cannot get objects')
+      t.notOk(haves.some(Boolean), 'objects not present before push')
+      t.equals(haves.length, hashes.length, 'not any of the objects')
+      t.end()
     })
   })
 }

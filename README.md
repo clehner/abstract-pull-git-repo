@@ -37,10 +37,12 @@ Get whether the repo contains the given git object
 
 #### `repo.getObject(hash, cb(err, object))`
 
-Get a git object from the repo
+Get a git object from the repo. If the object is not present, an error should
+result.
 
 - `hash`: sha1 hash of the git object to get
-- `object`: the git object, or falsy if it is not present
+- `err`: error getting the object, such as if the object does not exist
+- `object`: the retrieved git object
 
 #### `repo.update(refs, objects, cb(err))`
 
