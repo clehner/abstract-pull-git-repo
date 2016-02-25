@@ -10,6 +10,7 @@ function getUpdate(num) {
   var update = testRepoData.updates[num]
   return {
     refs: pull.values(update.refs),
+    hashes: update.objects,
     objects: pull(
       pull.values(update.objects),
       pull.map(function (hash) {
@@ -25,6 +26,9 @@ function getUpdate(num) {
     )
   }
 }
+
+exports.getUpdate = getUpdate
+exports.testObjectsAdded = testObjectsAdded
 
 exports.repo = function (test, repo) {
 
