@@ -27,6 +27,15 @@ Get the repo's refs.
 - `name`: the name of the ref, e.g. `'refs/heads/master'`
 - `hash`: git sha1 hash of the git object that the ref points to
 
+#### `repo.symrefs()`: `read(abort, next(end, {name, ref}))`
+
+Get the repo's symbolic refs. Symbolic refs are like refs that point to
+other refs. Usually the only symbolic ref is `HEAD`.
+
+- `read`: readable stream of symbolic ref info
+- `name`: the name of the symref, e.g. `'HEAD'`
+- `ref`: name of the ref pointed to by the symref, e.g. `'refs/heads/master'`
+
 #### `repo.hasObject(hash, cb(err, bool))`
 
 Get whether the repo contains the given git object

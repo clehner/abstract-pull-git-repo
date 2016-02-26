@@ -40,6 +40,13 @@ exports.repo = function (test, repo) {
     })
   })
 
+  test('repo supports symrefs', function (t) {
+    pull(repo.symrefs(), pull.collect(function (err, symrefs) {
+      t.error(err, 'symrefs')
+      t.end()
+    }))
+  })
+
   test('push updates to repo', function (t) {
     testPushCommit0(t, repo, repo)
     testPushCommit1(t, repo, repo)
