@@ -101,7 +101,7 @@ done by the feed owner.
   - `err`: error if updating the refs or reading the objects failed.
     If truthy, the repo will not have been updated
 
-#### `repo.uploadPack(refs, pack, idx, cb(err))`
+#### `repo.uploadPack(refs, packs, cb(err))`
 
 Update a repo by adding a packfile and index file to it and/or updating its
 refs. This may only be done by the feed owner. Implementing this method is
@@ -110,17 +110,16 @@ optional since it is only an optimization over pushing individual objects with
 
 - `refs`: readable stream of ref updates. Same as in `repo.update(refs, ...)`
 
-- `pack`: `read(abort, next(end, buf))`
+- `packs`: `read(abort, next(end, pack))`
 
-  readable stream of packfile data to add to the repo
+  readable stream of packs to add to the repo
 
-- `idx`: `read(abort, next(end, buf))`
+  - `pack.pack`: readable stream of packfile data
+  - `pack.idx`: readable stream of packfile index data
 
-  readable stream of pack index file data for the packfile
+- `cb`: function called after the packfiles, indexes, and refs have been read.
 
-- `cb`: function called after the packfile and refs have been read.
-
-  - `err`: error if updating the refs or reading the packfile stream failed.
+  - `err`: error if updating the refs or reading the packfiles stream failed.
     If truthy, the repo will not have been updated
 
 ## Test Suite
