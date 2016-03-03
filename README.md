@@ -36,6 +36,16 @@ other refs. Usually the only symbolic ref is `HEAD`.
 - `name`: the name of the symref, e.g. `'HEAD'`
 - `ref`: name of the ref pointed to by the symref, e.g. `'refs/heads/master'`
 
+#### `repo.packs()`: `read(abort, next(end, {packId, idxId}))`
+
+Get the repo's packfiles and their corresponding index files.
+
+- `read`: readable stream of packs info
+- `packId`: identifier of the packfile, which can be passed to
+    `repo.getPackfile` to retrieve the packfile data
+- `idxId`: identifier of the pack index file, which can be passed to
+    `repo.getPackIndex` to retrieve the pack index file data
+
 #### `repo.hasObject(hash, cb(err, bool))`
 
 Get whether the repo contains the given git object
@@ -52,6 +62,22 @@ result.
 - `hash`: sha1 hash of the git object to get
 - `err`: error getting the object, such as if the object does not exist
 - `object`: the retrieved git object
+
+#### `repo.getPackfile(id, cb(err, read))`
+
+Get a packfile from the repo
+
+- `id`: identifier for the packfile as returned by `repo.packs`
+- `err`: error if the packfile does not exist or cannot be retrieved
+- `read`: readable stream of packfile data
+
+#### `repo.getPackIndex(id, cb(err, read))`
+
+Get an index file for a packfile in the repo
+
+- `id`: identifier for the packfile and its index as returned by `repo.packs`
+- `err`: error if the index does not exist or cannot be retrieved
+- `read`: readable stream of pack index file data
 
 #### `repo.update(refs, objects, cb(err))`
 
@@ -73,6 +99,28 @@ done by the feed owner.
 - `cb`: function called after all objects and refs have been read.
 
   - `err`: error if updating the refs or reading the objects failed.
+    If truthy, the repo will not have been updated
+
+#### `repo.uploadPack(refs, pack, idx, cb(err))`
+
+Update a repo by adding a packfile and index file to it and/or updating its
+refs. This may only be done by the feed owner. Implementing this method is
+optional since it is only an optimization over pushing individual objects with
+`repo.update()`
+
+- `refs`: readable stream of ref updates. Same as in `repo.update(refs, ...)`
+
+- `pack`: `read(abort, next(end, buf))`
+
+  readable stream of packfile data to add to the repo
+
+- `idx`: `read(abort, next(end, buf))`
+
+  readable stream of pack index file data for the packfile
+
+- `cb`: function called after the packfile and refs have been read.
+
+  - `err`: error if updating the refs or reading the packfile stream failed.
     If truthy, the repo will not have been updated
 
 ## Test Suite
