@@ -11,6 +11,7 @@ function getUpdate(num) {
   return {
     refs: pull.values(update.refs),
     hashes: update.objects,
+    numObjects: update.objects.length,
     objects: pull(
       pull.values(update.objects),
       pull.map(function (hash) {
