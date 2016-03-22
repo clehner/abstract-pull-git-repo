@@ -157,7 +157,7 @@ function testDeleteTag(t, repoA, repoB) {
 function repoHasObjects(repo, hashes, cb) {
   var done = multicb({pluck: 1})
   hashes.forEach(function (hash) {
-    repo.hasObject(hash, done())
+    repoHasObject(repo, hash, done())
   })
   done(cb)
 }
@@ -165,7 +165,7 @@ function repoHasObjects(repo, hashes, cb) {
 function repoGetObjects(repo, hashes, cb) {
   var done = multicb({pluck: 1})
   hashes.forEach(function (hash) {
-    repo.getObject(hash, done())
+    repoGetObject(repo, hash, done())
   })
   done(cb)
 }
@@ -208,27 +208,39 @@ function testNoObjects(t, repo, hashes) {
   })
 }
 
-function testObjectsAdded(t, repo, hashes) {
-  repoHasObjects(repo, hashes, function (err, haves) {
-    if (!haves) {
-      t.fail('hasObject failed')
-    } else {
-      t.ok(haves.every(Boolean), 'got the objects')
-      t.equals(haves.length, hashes.length, 'all the objects')
-    }
+function testObjectsAdded(t, repo, hashes, cb) {
+  t.test('repo has objects', function (t) {
+    repoHasObjects(repo, hashes, function (err, haves) {
+      if (!haves) {
+        t.fail('hasObject failed')
+      } else {
+        t.ok(haves.every(Boolean), 'got the objects')
+        t.equals(haves.length, hashes.length, 'all the objects')
+      }
 
-    t.test('object contents can be retrieved', function (t) {
-      testObjectsRetrievable(t, repo, hashes)
-      t.end()
+      t.test('object contents can be retrieved', function (t) {
+        testObjectsRetrievable(t, repo, hashes)
+        t.end()
+        if (cb) cb()
+      })
     })
   })
+}
+
+// FIXME
+function repoGetObject(repo, id, cb) {
+  ;(repo.getObjectFromAny || repo.getObject).call(repo, id, cb)
+}
+
+function repoHasObject(repo, id, cb) {
+  ;(repo.hasObjectFromAny || repo.hasObject).call(repo, id, cb)
 }
 
 function testObjectsRetrievable(t, repo, hashes) {
   var done = multicb({pluck: 1})
   hashes.forEach(function (hash) {
     var cb = done()
-    repo.getObject(hash, function (err, obj) {
+    repoGetObject(repo, hash, function (err, obj) {
       t.error(err, 'got object')
       if (!obj) {
         t.fail('Missing object ' + hash)
