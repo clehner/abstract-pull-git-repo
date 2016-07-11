@@ -4,7 +4,7 @@ git repo interface using [pull-stream][]s
 
 [pull-stream]: https://github.com/dominictarr/pull-stream/
 [memory-pull-git-repo]: https://github.com/clehner/memory-pull-git-repo
-[ssb-git]: https://github.com/clehner/ssb-git
+[ssb-git-repo]: https://github.com/clehner/ssb-git-repo
 [tape]: https://github.com/substack/tape
 [keyword]: https://www.npmjs.com/browse/keyword/pull-git-repo
 [mango]: https://github.com/axic/git-remote-mango/blob/master/mango.js
@@ -171,7 +171,7 @@ tests.repos(test, repo, function (cb) {
 ## Implementations
 
 - [memory-pull-git-repo][]
-- [ssb-git][]
+- [ssb-git-repo][]
 - [mango][]
 
 See also keyword [`pull-git-repo`][keyword] on npm
