@@ -7,6 +7,7 @@ git repo interface using [pull-stream][]s
 [ssb-git]: https://github.com/clehner/ssb-git
 [tape]: https://github.com/substack/tape
 [keyword]: https://www.npmjs.com/browse/keyword/pull-git-repo
+[mango]: https://github.com/axic/git-remote-mango/blob/master/mango.js
 
 ## API
 
@@ -171,6 +172,7 @@ tests.repos(test, repo, function (cb) {
 
 - [memory-pull-git-repo][]
 - [ssb-git][]
+- [mango][]
 
 See also keyword [`pull-git-repo`][keyword] on npm
 
