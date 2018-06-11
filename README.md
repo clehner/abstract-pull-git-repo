@@ -8,6 +8,7 @@ git repo interface using [pull-stream][]s
 [tape]: https://github.com/substack/tape
 [keyword]: https://www.npmjs.com/browse/keyword/pull-git-repo
 [mango]: https://github.com/axic/git-remote-mango/blob/master/mango.js
+[hyperdb-git-repo]: https://github.com/noffle/hyperdb-git-repo
 
 ## API
 
@@ -173,6 +174,7 @@ tests.repos(test, repo, function (cb) {
 - [memory-pull-git-repo][]
 - [ssb-git-repo][]
 - [mango][]
+- [hyperdb-git-repo][]
 
 See also keyword [`pull-git-repo`][keyword] on npm
 
